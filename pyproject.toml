@@ -1,0 +1,10 @@
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "strict"
+asyncio_default_fixture_loop_scope = "function"
+addopts = "--cov=agents --cov=graph --cov-report=term-missing -v"
+
+[tool.coverage.run]
+# 明确指定要统计的源码包，排除测试文件
+source = ["agents", "graph"]
+omit = ["tests/*"]
