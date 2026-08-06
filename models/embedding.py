@@ -1,7 +1,7 @@
 # models/embedding.py
 """
-Embedding 模型统一管理 (RTX 5060 8GB 优化版)
-核心策略: 强制 CPU + ONNX 加速，将 8GB 显存 100% 留给 LLM
+Embedding 模型统一管理
+
 """
 
 import os
@@ -28,7 +28,7 @@ def get_embedding_model(
         use_api: bool = False
 ) -> Embeddings:
     """
-    获取 Embedding 模型实例 (全局单例)
+    获取 Embedding 模型实例
 
     Args:
         model_name: 模型名称或本地路径。默认 'BAAI/bge-m3'。
