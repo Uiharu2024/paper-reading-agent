@@ -51,12 +51,12 @@ class KnowledgeGraphManager:
             standard_name_en: 标准英文名
             domain_category: 学科领域
         """
-        # 节点ID使用标准英文名(如果存在)，否则用原文
+        # 节点ID使用标准英文名(如果存在)
         node_id = standard_name_en.lower() if standard_name_en else term.lower()
 
         # 如果节点已存在，更新元数据
         if self.graph.has_node(node_id):
-            # 追加论文ID (一个术语可能在多篇论文中出现)
+            # 追加论文ID 
             existing_papers = self.graph.nodes[node_id].get("paper_ids", [])
             if paper_id not in existing_papers:
                 existing_papers.append(paper_id)
