@@ -198,7 +198,7 @@ if st.button("🚀 开始智能分析", type="primary", use_container_width=True
                 import traceback
                 error_msg = traceback.format_exc()
                 status.update(label=f"❌ 执行出错: {type(e).__name__}", state="error", expanded=True)
-                st.error(error_msg)  # 👈 用 st.error 打印完整堆栈到页面上
+                st.error(error_msg)
                 st.stop()
 
         # ==================== 5. 结果渲染区 ====================
