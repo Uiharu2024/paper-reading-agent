@@ -34,7 +34,7 @@ class PaperReadingState(TypedDict):
     explanation: str  # 解释Agent生成的详细解释文本
 
     # ==================== 🧠 记忆与累积状态 ====================
-    # operator.add: 每次更新时自动追加到列表末尾，而非覆盖
+    # operator.add: 更新时自动追加到列表末尾
     annotation_history: Annotated[List[Dict[str, Any]], operator.add]
     messages: Annotated[List[BaseMessage], operator.add]  # Agent间通信消息
 
@@ -47,6 +47,6 @@ class PaperReadingState(TypedDict):
     cumulative_report: str  # 阶段性综合分析报告(Markdown)
 
     # ==================== 🎛️ 控制流 ====================
-    current_agent: str  # 当前正在执行的Agent节点名
+    current_agent: str  # 正在执行的Agent节点名
     needs_refinement: bool  # 是否需要进入优化循环
-    refinement_count: int  # 当前已优化的次数(防无限循环)
+    refinement_count: int  # 当前已优化的次数
