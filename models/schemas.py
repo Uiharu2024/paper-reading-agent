@@ -20,7 +20,7 @@ class ReadingRequest(BaseModel):
     selection_context: str = Field(description="划词所在的段落上下文")
     selection_page: int = Field(default=1, description="划词所在页码")
 
-    # 可选：用户主动触发的控制参数
+    # 用户主动触发的控制参数
     force_deep_analysis: bool = Field(default=False, description="强制进行深度分析")
     user_feedback: Optional[str] = Field(default=None, description="用户对上一次解释的反馈")
 
@@ -32,7 +32,7 @@ class ReadingResponse(BaseModel):
     explanation: str = Field(description="生成的详细解释 (Markdown格式)")
     session_report: str = Field(description="即时知识卡片 (Markdown格式)")
 
-    # 记忆与图谱数据 (用于前端渲染)
+    # 记忆与图谱数据
     related_terms: List[str] = Field(default_factory=list, description="相关推荐术语")
     knowledge_graph_snippet: Dict[str, Any] = Field(default_factory=dict, description="局部知识图谱数据")
     user_profile_summary: str = Field(default="", description="当前用户画像摘要")
@@ -59,7 +59,7 @@ class AnnotationRecord(BaseModel):
 
 
 class KnowledgeEdge(BaseModel):
-    """知识图谱中的边 (关系) 结构"""
+    """知识图谱中的边结构"""
     source: str = Field(description="源节点ID (通常是标准英文名或原文)")
     target: str = Field(description="目标节点ID")
     relation_type: str = Field(default="related", description="关系类型 (co_occurred, same_domain, parent, child等)")
