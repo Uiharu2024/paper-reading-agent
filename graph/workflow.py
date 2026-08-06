@@ -15,21 +15,8 @@ from .conditions import route_after_router, route_after_memory_updater
 def build_graph(use_memory_saver=True):
     """
     构建并返回编译后的 LangGraph 应用
-
-    工作流拓扑:
-        START → router ──┬──(QUICK)──→ explainer_fast → reporter → memory_updater ─┐
-                         │                                                          │
-                         └──(STANDARD/DEEP)→ recognizer → retriever → explainer     │
-                                                                              ↓     │
-                                                              reporter → memory_updater
-                                                                              ↓
-                                                                    [should_refine?]
-                                                                   ↙              ↘
-                                                              (refine)           (done)
-                                                           retriever               END
+    
     """
-    # ✅ 修复1: 延迟导入打破循环依赖
-    # ✅ 修复2: 补全缺失的 recognizer_node 导入
     from agents import (
         router_node,
         recognizer_node,
@@ -38,7 +25,6 @@ def build_graph(use_memory_saver=True):
         reporter_node,
     )
 
-    # ✅ 修复3: 移除多余的 graph = StateGraph(...)，只保留 workflow
     workflow = StateGraph(PaperReadingState)
 
     # ========== 1. 注册所有节点 ==========
@@ -48,8 +34,6 @@ def build_graph(use_memory_saver=True):
     workflow.add_node("explainer", explainer_node)
     workflow.add_node("reporter", reporter_node)
     workflow.add_node("memory_updater", _memory_updater_node)
-
-    # 可选: 轻量解释节点(QUICK路径专用，使用更小模型)
     workflow.add_node("explainer_fast", explainer_node)
 
     # ========== 2. 定义边 ==========
@@ -79,7 +63,7 @@ def build_graph(use_memory_saver=True):
         },
     )
 
-    # ========== 3. 编译图(带持久化Checkpointer) ==========
+    # ========== 3. 编译图 ==========
     if use_memory_saver:
         checkpointer = MemorySaver()
     else:
@@ -109,7 +93,7 @@ async def _memory_updater_node(state: PaperReadingState) -> dict:
     return updates
 
 
-# ========== 模块级单例(避免重复编译) ==========
+# ========== 模块级单例 ==========
 _graph_instance = None
 
 
